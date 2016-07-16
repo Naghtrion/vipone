@@ -11,16 +11,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import me.subzero0.vipone.async.AsyncManager;
 
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import ru.tehkode.permissions.PermissionUser;
-import ru.tehkode.permissions.bukkit.PermissionsEx;
-
-public class ThreadVZ extends Thread {
+public class TaskVZ implements Runnable {
 
     private String tipo;
     private CommandSender sender;
@@ -32,12 +30,12 @@ public class ThreadVZ extends Thread {
     private String fGrupo;
     private String[] args;
 
-    public ThreadVZ(Main plugin, String tipo) {
+    public TaskVZ(Main plugin, String tipo) {
         this.plugin = plugin;
         this.tipo = tipo;
     }
 
-    public ThreadVZ(Main plugin, String tipo, CommandSender sender, String grupo, int dias, String key) {
+    public TaskVZ(Main plugin, String tipo, CommandSender sender, String grupo, int dias, String key) {
         this.plugin = plugin;
         this.tipo = tipo;
         this.sender = sender;
@@ -46,33 +44,33 @@ public class ThreadVZ extends Thread {
         this.key = key;
     }
 
-    public ThreadVZ(Main plugin, String tipo, CommandSender sender, String grupo) {
+    public TaskVZ(Main plugin, String tipo, CommandSender sender, String grupo) {
         this.plugin = plugin;
         this.tipo = tipo;
         this.sender = sender;
         this.grupo = grupo;
     }
 
-    public ThreadVZ(Main plugin, String tipo, String key, CommandSender sender) {
+    public TaskVZ(Main plugin, String tipo, String key, CommandSender sender) {
         this.plugin = plugin;
         this.tipo = tipo;
         this.sender = sender;
         this.key = key;
     }
 
-    public ThreadVZ(Main plugin, String tipo, CommandSender sender) {
+    public TaskVZ(Main plugin, String tipo, CommandSender sender) {
         this.plugin = plugin;
         this.tipo = tipo;
         this.sender = sender;
     }
 
-    public ThreadVZ(Main plugin, String tipo, Player p) {
+    public TaskVZ(Main plugin, String tipo, Player p) {
         this.plugin = plugin;
         this.tipo = tipo;
         this.p = p;
     }
 
-    public ThreadVZ(Main plugin, String tipo, Player p, String[] args, CommandSender sender, String grupo) {
+    public TaskVZ(Main plugin, String tipo, Player p, String[] args, CommandSender sender, String grupo) {
         this.plugin = plugin;
         this.tipo = tipo;
         this.p = p;
@@ -81,14 +79,14 @@ public class ThreadVZ extends Thread {
         this.grupo = grupo;
     }
 
-    public ThreadVZ(Main plugin, String tipo, Player p, String grupo) {
+    public TaskVZ(Main plugin, String tipo, Player p, String grupo) {
         this.plugin = plugin;
         this.tipo = tipo;
         this.p = p;
         this.grupo = grupo;
     }
 
-    public ThreadVZ(Main plugin, String tipo, Player p, String grupo, String fGrupo) {
+    public TaskVZ(Main plugin, String tipo, Player p, String grupo, String fGrupo) {
         this.plugin = plugin;
         this.tipo = tipo;
         this.p = p;
@@ -96,14 +94,14 @@ public class ThreadVZ extends Thread {
         this.fGrupo = fGrupo;
     }
 
-    public ThreadVZ(Main plugin, String grupo, String tipo, Player p) {
+    public TaskVZ(Main plugin, String grupo, String tipo, Player p) {
         this.plugin = plugin;
         this.tipo = tipo;
         this.p = p;
         this.grupo = grupo;
     }
 
-    public ThreadVZ(Main plugin, String tipo, Player p, int dias, String grupo) {
+    public TaskVZ(Main plugin, String tipo, Player p, int dias, String grupo) {
         this.plugin = plugin;
         this.tipo = tipo;
         this.p = p;
@@ -111,14 +109,14 @@ public class ThreadVZ extends Thread {
         this.dias = dias;
     }
 
-    public ThreadVZ(Main plugin, String tipo, CommandSender sender, Player p) {
+    public TaskVZ(Main plugin, String tipo, CommandSender sender, Player p) {
         this.plugin = plugin;
         this.tipo = tipo;
         this.sender = sender;
         this.p = p;
     }
 
-    public ThreadVZ(Main plugin, String tipo, CommandSender sender, String grupo, int dias) {
+    public TaskVZ(Main plugin, String tipo, CommandSender sender, String grupo, int dias) {
         this.plugin = plugin;
         this.tipo = tipo;
         this.sender = sender;
@@ -607,8 +605,8 @@ public class ThreadVZ extends Thread {
                             lista1.get(p).remove(0);
                             String grupo_h = lista2.get(p).get(0);
                             lista2.get(p).remove(0);
-                            ThreadVZ t = new ThreadVZ(plugin, "givevip", p, dias_h, grupo_h.trim());
-                            t.start();
+                            TaskVZ t = new TaskVZ(plugin, "givevip", p, dias_h, grupo_h.trim());
+                            AsyncManager.getInstance().addQueue(t);
                         } else {
                             lista0.remove(p);
                         }

@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import me.subzero0.vipone.async.AsyncManager;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -162,8 +163,8 @@ public class PayPal extends Thread {
                         sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + "Key: " + ChatColor.GREEN + key + ChatColor.WHITE + " (" + grupo.toUpperCase() + ") - " + ChatColor.GREEN + item4.split(",")[1] + ChatColor.WHITE + " " + plugin.getMessage("message1") + ".");
                         plugin.reloadConfig();
                     } else {
-                        ThreadVZ nk = new ThreadVZ(plugin, "newkey", sender, grupo, Integer.parseInt(item4.split(",")[1]), key);
-                        nk.start();
+                        TaskVZ nk = new TaskVZ(plugin, "newkey", sender, grupo, Integer.parseInt(item4.split(",")[1]), key);
+                        AsyncManager.getInstance().addQueue(nk);
                     }
                 }
             }

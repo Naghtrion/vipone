@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Set;
+import me.subzero0.vipone.async.AsyncManager;
 
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.ChatColor;
@@ -58,8 +59,8 @@ public class Commands implements CommandExecutor {
                                     sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("addvip").trim().replaceAll("%days%", Integer.toString(dias).replaceAll("%group%", grupo)) + ".");
                                     plugin.reloadConfig();
                                 } else {
-                                    ThreadVZ nk = new ThreadVZ(plugin, "addvip", sender, grupo, dias);
-                                    nk.start();
+                                    TaskVZ nk = new TaskVZ(plugin, "addvip", sender, grupo, dias);
+                                    AsyncManager.getInstance().addQueue(nk);
                                 }
                             } else {
                                 sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("error1") + ".");
@@ -120,8 +121,8 @@ public class Commands implements CommandExecutor {
                                             plugin.DarItensVip(p, dias, grupo.trim());
                                         }
                                     } else {
-                                        ThreadVZ t = new ThreadVZ(plugin, "givevip", p, dias, grupo);
-                                        t.start();
+                                        TaskVZ t = new TaskVZ(plugin, "givevip", p, dias, grupo);
+                                        AsyncManager.getInstance().addQueue(t);
                                     }
                                 } else if (sender != plugin.getServer().getConsoleSender()) {
                                     sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("error1") + "!");
@@ -174,8 +175,8 @@ public class Commands implements CommandExecutor {
                                     sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + p.getName() + " " + plugin.getMessage("error9") + "!");
                                 }
                             } else {
-                                ThreadVZ t = new ThreadVZ(plugin, "mudardias1", sender, p);
-                                t.start();
+                                TaskVZ t = new TaskVZ(plugin, "mudardias1", sender, p);
+                                AsyncManager.getInstance().addQueue(t);
                             }
                         } else if (plugin.flatfile) {
                             if (plugin.getConfig().contains("vips." + plugin.getRealName(p.getName()))) {
@@ -219,8 +220,8 @@ public class Commands implements CommandExecutor {
                                     }
                                 }
                                 if (achou) {
-                                    ThreadVZ t = new ThreadVZ(plugin, "mudardias2", p, args, sender, grupo);
-                                    t.start();
+                                    TaskVZ t = new TaskVZ(plugin, "mudardias2", p, args, sender, grupo);
+                                    AsyncManager.getInstance().addQueue(t);
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -301,8 +302,8 @@ public class Commands implements CommandExecutor {
                             }
                         }
                         if (achou) {
-                            ThreadVZ t = new ThreadVZ(plugin, "trocarvip", sender, grupo);
-                            t.start();
+                            TaskVZ t = new TaskVZ(plugin, "trocarvip", sender, grupo);
+                            AsyncManager.getInstance().addQueue(t);
                         } else {
                             sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("error8") + "!");
                         }
@@ -341,8 +342,8 @@ public class Commands implements CommandExecutor {
                                     sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + "Key: " + ChatColor.GREEN + key + ChatColor.WHITE + " (" + grupo.toUpperCase() + ") - " + ChatColor.GREEN + dias + ChatColor.WHITE + " " + plugin.getMessage("message1") + ".");
                                     plugin.reloadConfig();
                                 } else {
-                                    ThreadVZ nk = new ThreadVZ(plugin, "newkey", sender, grupo, dias, key);
-                                    nk.start();
+                                    TaskVZ nk = new TaskVZ(plugin, "newkey", sender, grupo, dias, key);
+                                    AsyncManager.getInstance().addQueue(nk);
                                 }
                             } else {
                                 sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("error1") + ".");
@@ -378,8 +379,8 @@ public class Commands implements CommandExecutor {
                         sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("error4") + ".");
                     }
                 } else {
-                    ThreadVZ t = new ThreadVZ(plugin, "keys", sender);
-                    t.start();
+                    TaskVZ t = new TaskVZ(plugin, "keys", sender);
+                    AsyncManager.getInstance().addQueue(t);
                 }
             } else {
                 sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("error11") + "!");
@@ -394,8 +395,8 @@ public class Commands implements CommandExecutor {
                     plugin.reloadConfig();
                     sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("success1") + "!");
                 } else {
-                    ThreadVZ t = new ThreadVZ(plugin, "delkeys", sender);
-                    t.start();
+                    TaskVZ t = new TaskVZ(plugin, "delkeys", sender);
+                    AsyncManager.getInstance().addQueue(t);
                 }
             } else {
                 sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("error11") + "!");
@@ -419,8 +420,8 @@ public class Commands implements CommandExecutor {
                     plugin.reloadConfig();
                     sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("success5").replaceAll("%key%", key) + "!");
                 } else {
-                    ThreadVZ t = new ThreadVZ(plugin, "delkey", key, sender);
-                    t.start();
+                    TaskVZ t = new TaskVZ(plugin, "delkey", key, sender);
+                    AsyncManager.getInstance().addQueue(t);
                 }
             } else {
                 sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("error11") + "!");
@@ -476,8 +477,8 @@ public class Commands implements CommandExecutor {
                             }
                             plugin.using_codes.remove(key);
                         } else {
-                            ThreadVZ t = new ThreadVZ(plugin, "usekey", key, sender);
-                            t.start();
+                            TaskVZ t = new TaskVZ(plugin, "usekey", key, sender);
+                            AsyncManager.getInstance().addQueue(t);
                         }
                     } else {
                         sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("error13") + "!");
@@ -505,8 +506,8 @@ public class Commands implements CommandExecutor {
                         sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("error6") + "!");
                     }
                 } else {
-                    ThreadVZ t = new ThreadVZ(plugin, "tempovip", sender);
-                    t.start();
+                    TaskVZ t = new TaskVZ(plugin, "tempovip", sender);
+                    AsyncManager.getInstance().addQueue(t);
                 }
             } else {
                 sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("error11") + "!");
@@ -691,8 +692,8 @@ public class Commands implements CommandExecutor {
                                 sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + p.getName() + " " + plugin.getMessage("error9") + "!");
                             }
                         } else {
-                            ThreadVZ t = new ThreadVZ(plugin, "rvip", sender, p);
-                            t.start();
+                            TaskVZ t = new TaskVZ(plugin, "rvip", sender, p);
+                            AsyncManager.getInstance().addQueue(t);
                         }
                     } else {
                         sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("error7") + "!");

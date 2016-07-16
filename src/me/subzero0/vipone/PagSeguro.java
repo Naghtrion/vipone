@@ -17,6 +17,7 @@ import org.bukkit.command.CommandSender;
 import br.com.uol.pagseguro.domain.AccountCredentials;
 import br.com.uol.pagseguro.domain.Transaction;
 import br.com.uol.pagseguro.service.TransactionSearchService;
+import me.subzero0.vipone.async.AsyncManager;
 
 public class PagSeguro extends Thread {
 
@@ -146,8 +147,8 @@ public class PagSeguro extends Thread {
                         sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + "Key: " + ChatColor.GREEN + key + ChatColor.WHITE + " (" + grupo.toUpperCase() + ") - " + ChatColor.GREEN + item4.split("id: vz:")[1].split(",")[1] + ChatColor.WHITE + " " + plugin.getMessage("message1") + ".");
                         plugin.reloadConfig();
                     } else {
-                        ThreadVZ nk = new ThreadVZ(plugin, "newkey", sender, grupo, Integer.parseInt(item4.split("id: vz:")[1].split(",")[1]), key);
-                        nk.start();
+                        TaskVZ nk = new TaskVZ(plugin, "newkey", sender, grupo, Integer.parseInt(item4.split("id: vz:")[1].split(",")[1]), key);
+                        AsyncManager.getInstance().addQueue(nk);
                     }
                 }
             }

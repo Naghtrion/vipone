@@ -12,6 +12,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import me.subzero0.vipone.async.AsyncManager;
 
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -166,7 +167,7 @@ public class Main extends JavaPlugin implements Listener {
             } catch (Exception e) {
             }
         }
-
+        AsyncManager.getInstance().start();
         usekey_global = getConfig().getBoolean("usekey_global");
 
         int tempo = getConfig().getInt("check_time");
@@ -288,6 +289,7 @@ public class Main extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         getLogger().info("Disabling VipZero - Author: SubZero0");
+        AsyncManager.getInstance().stop();
     }
 
     private boolean setupEconomy() {
@@ -340,8 +342,8 @@ public class Main extends JavaPlugin implements Listener {
                 getConfig().set("vips." + getRealName(p.getName()) + ".usando", grupo);
                 saveConfig();
             } else {
-                ThreadVZ t = new ThreadVZ(this, "darvip", p, grupo);
-                t.start();
+                TaskVZ t = new TaskVZ(this, "darvip", p, grupo);
+                AsyncManager.getInstance().addQueue(t);
             }
         }
         DarItensVip(p, dias, grupo);
@@ -363,8 +365,8 @@ public class Main extends JavaPlugin implements Listener {
             }
             saveConfig();
         } else {
-            ThreadVZ t = new ThreadVZ(this, "tirarvip", p, grupo, fGrupo);
-            t.start();
+            TaskVZ t = new TaskVZ(this, "tirarvip", p, grupo, fGrupo);
+            AsyncManager.getInstance().addQueue(t);
         }
         hook.setGroup(p, gFinal);
         getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
@@ -380,8 +382,8 @@ public class Main extends JavaPlugin implements Listener {
             getConfig().set("vips." + getRealName(p.getName()) + "." + grupo, null);
             saveConfig();
         } else {
-            ThreadVZ t = new ThreadVZ(this, grupo, "tirarvip2", p);
-            t.start();
+            TaskVZ t = new TaskVZ(this, grupo, "tirarvip2", p);
+            AsyncManager.getInstance().addQueue(t);
         }
         getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
             @Override
@@ -481,8 +483,8 @@ public class Main extends JavaPlugin implements Listener {
                 }
             }
         } else {
-            ThreadVZ t = new ThreadVZ(this, "atualizar", p);
-            t.start();
+            TaskVZ t = new TaskVZ(this, "atualizar", p);
+            AsyncManager.getInstance().addQueue(t);
         }
     }
 
