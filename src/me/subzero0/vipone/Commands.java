@@ -564,6 +564,10 @@ public class Commands implements CommandExecutor {
                             sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("error13") + "!");
                             return true;
                         }
+                        if (args[1].contains(";")) {
+                            sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("error15") + "!");
+                            return true;
+                        }
                         plugin.using_ps.put(args[1].toUpperCase(), "");
                         PagSeguro ps = new PagSeguro(plugin, args[1], sender);
                         ps.start();
