@@ -27,7 +27,7 @@ public class PagSeguro extends Thread {
 
     public PagSeguro(Main plugin, String transactionCode2, CommandSender cmds) {
         this.plugin = plugin;
-        transactionCode = transactionCode2.toUpperCase();
+        transactionCode = transactionCode2.toUpperCase().replaceAll("[^a-zA-Z0-9]+", "");
         sender = cmds;
     }
 
