@@ -1,5 +1,5 @@
 name: VipOne
-main: me.subzero0.vipzero.Main
+main: me.subzero0.vipone.Main
 version: 1.2.2
 softdepend: [Vault]
 commands:
