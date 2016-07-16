@@ -23,8 +23,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.server.PluginDisableEvent;
-import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -34,7 +32,7 @@ import ru.tehkode.permissions.bukkit.PermissionsEx;
 @SuppressWarnings("unused")
 public class Main extends JavaPlugin implements Listener {
 
-    protected GMHook hook = new GMHook(this);
+    protected PermissionsManager hook = null;
     protected static Economy econ = null;
     protected static Permission perms = null;
     protected boolean block_dinheiro = false;
@@ -42,7 +40,6 @@ public class Main extends JavaPlugin implements Listener {
     protected boolean flatfile = true;
     protected boolean usekey_global = false;
     protected String need_update = null;
-    protected boolean use_vault_for_perms = true;
     protected HashMap<String, String> trocou = new HashMap<String, String>();
 
     //Mysql
@@ -62,16 +59,6 @@ public class Main extends JavaPlugin implements Listener {
     protected boolean mysql_paypal = false;
     protected HashMap<String, String> using_pp = new HashMap<String, String>();
     protected FileConfiguration paypal = null;
-
-    @EventHandler
-    public void onPluginEnabled(PluginEnableEvent event) {
-        hook.onPluginEnable(event);
-    }
-
-    @EventHandler
-    public void onPluginDisabled(PluginDisableEvent event) {
-        hook.onPluginDisable(event);
-    }
 
     @Override
     public void onEnable() {
@@ -98,6 +85,7 @@ public class Main extends JavaPlugin implements Listener {
         getServer().getPluginCommand("givevip").setExecutor(new Commands(this));
         getServer().getPluginCommand("addvip").setExecutor(new Commands(this));
         getServer().getPluginManager().registerEvents(this, this);
+        hook = new PermissionsManager(this);
 
         File file = new File(getDataFolder(), "config.yml");
         if (!file.exists()) {
@@ -192,22 +180,8 @@ public class Main extends JavaPlugin implements Listener {
             }, 20L, 1200 * tempo);
         }
 
-        use_vault_for_perms = getConfig().getBoolean("use_vault_for_permissions");
-        if (use_vault_for_perms) {
-            getLogger().info("Use only Vault for permissions: ENABLED!");
-        }
-
         boolean perm_linked = false;
-        if (getServer().getPluginManager().getPlugin("GroupManager") != null && !use_vault_for_perms) {
-            getLogger().info("Hooked to GroupManager.");
-            perm_linked = true;
-        } else if (getServer().getPluginManager().getPlugin("PermissionsEx") != null && !use_vault_for_perms) {
-            getLogger().info("Hooked to PermissionsEx.");
-            perm_linked = true;
-        } else if (getServer().getPluginManager().getPlugin("FullPVP") != null && !use_vault_for_perms) {
-            getLogger().info("Hooked to FullPVP.");
-            perm_linked = true;
-        } else if (!setupPermissions()) {
+        if (!setupPermissions()) {
             getLogger().warning("ERROR: No permissions plugin found! Disabling...");
             getServer().getPluginManager().disablePlugin(this);
         } else {
@@ -341,100 +315,33 @@ public class Main extends JavaPlugin implements Listener {
     }
 
     protected void removeRelatedVipGroups(Player p) {
-        if (getServer().getPluginManager().getPlugin("GroupManager") != null && !use_vault_for_perms) {
-            //n achei como controlar os subgroups
-        } else if (getServer().getPluginManager().getPlugin("PermissionsEx") != null && !use_vault_for_perms) {
-            PermissionUser user = PermissionsEx.getUser(p);
-            for (String g : user.getGroupsNames()) {
-                boolean existe = false;
-                for (String list : getConfig().getStringList("vip_groups")) {
-                    if (g.equalsIgnoreCase(list)) {
-                        existe = true;
-                        break;
-                    }
-                }
-                if (existe) {
-                    user.removeGroup(g);
-                }
-            }
-        } else {
-            for (String g : perms.getPlayerGroups(p)) {
-                boolean existe = false;
-                for (String list : getConfig().getStringList("vip_groups")) {
-                    if (g.equalsIgnoreCase(list)) {
-                        existe = true;
-                        break;
-                    }
-                }
-                if (existe) {
-                    perms.playerRemoveGroup(p, g);
+        for (String g : hook.getGroups(p)) {
+            for (String list : getConfig().getStringList("vip_groups")) {
+                if (g.equalsIgnoreCase(list)) {
+                    hook.removeGroup(p, g);
+                    break;
                 }
             }
         }
     }
 
     protected void DarVip(Player p, int dias, String grupo) {
-        if (getServer().getPluginManager().getPlugin("GroupManager") != null && !use_vault_for_perms) {
-            boolean temvip = false;
-            for (String list : getConfig().getStringList("vip_groups")) {
-                if (hook.getGroup(p).equalsIgnoreCase(list)) {
-                    temvip = true;
-                    break;
-                }
+        boolean temvip = false;
+        for (String list : getConfig().getStringList("vip_groups")) {
+            if (hook.getGroup(p).equalsIgnoreCase(list)) {
+                temvip = true;
+                break;
             }
-            if (!temvip) {
-                removeRelatedVipGroups(p);
-                hook.setGroup(p, grupo);
-                if (flatfile) {
-                    getConfig().set("vips." + getRealName(p.getName()) + ".usando", grupo);
-                    saveConfig();
-                } else {
-                    ThreadVZ t = new ThreadVZ(this, "darvip", p, grupo);
-                    t.start();
-                }
-            }
-        } else if (getServer().getPluginManager().getPlugin("PermissionsEx") != null && !use_vault_for_perms) {
-            PermissionUser user = PermissionsEx.getUser(p);
-            boolean temvip = false;
-            for (String list : getConfig().getStringList("vip_groups")) {
-                for (String gName : user.getGroupsNames()) {
-                    if (list.equalsIgnoreCase(gName)) {
-                        temvip = true;
-                        break;
-                    }
-                }
-            }
-            if (!temvip) {
-                removeRelatedVipGroups(p);
-                user.addGroup(grupo);
-                if (flatfile) {
-                    getConfig().set("vips." + getRealName(p.getName()) + ".usando", grupo);
-                    saveConfig();
-                } else {
-                    ThreadVZ t = new ThreadVZ(this, "darvip", p, grupo);
-                    t.start();
-                }
-            }
-        } else {
-            boolean temvip = false;
-            for (String list : getConfig().getStringList("vip_groups")) {
-                for (String gName : perms.getPlayerGroups(p)) {
-                    if (list.equalsIgnoreCase(gName)) {
-                        temvip = true;
-                        break;
-                    }
-                }
-            }
-            if (!temvip) {
-                removeRelatedVipGroups(p);
-                perms.playerAddGroup(p, grupo);
-                if (flatfile) {
-                    getConfig().set("vips." + getRealName(p.getName()) + ".usando", grupo);
-                    saveConfig();
-                } else {
-                    ThreadVZ t = new ThreadVZ(this, "darvip", p, grupo);
-                    t.start();
-                }
+        }
+        if (!temvip) {
+            removeRelatedVipGroups(p);
+            hook.setGroup(p, grupo);
+            if (flatfile) {
+                getConfig().set("vips." + getRealName(p.getName()) + ".usando", grupo);
+                saveConfig();
+            } else {
+                ThreadVZ t = new ThreadVZ(this, "darvip", p, grupo);
+                t.start();
             }
         }
         DarItensVip(p, dias, grupo);
@@ -459,17 +366,7 @@ public class Main extends JavaPlugin implements Listener {
             ThreadVZ t = new ThreadVZ(this, "tirarvip", p, grupo, fGrupo);
             t.start();
         }
-        if (getServer().getPluginManager().getPlugin("GroupManager") != null && !use_vault_for_perms) {
-            hook.setGroup(p, gFinal);
-        } else if (getServer().getPluginManager().getPlugin("PermissionsEx") != null && !use_vault_for_perms) {
-            PermissionUser user = PermissionsEx.getUser(p);
-            removeRelatedVipGroups(p);
-            user.addGroup(gFinal);
-        } else {
-            perms.playerRemoveGroup(p, grupo);
-            removeRelatedVipGroups(p);
-            perms.playerAddGroup(p, gFinal);
-        }
+        hook.setGroup(p, gFinal);
         getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
             @Override
             public void run() {
@@ -577,23 +474,9 @@ public class Main extends JavaPlugin implements Listener {
                 }
             } else if (getConfig().getBoolean("rvip_unlisted")) {
                 for (String n : getConfig().getStringList("vip_groups")) {
-                    if (getServer().getPluginManager().getPlugin("GroupManager") != null && !use_vault_for_perms) {
-                        List<String> l = hook.getGroups(p);
-                        if (l.contains(n.trim())) {
-                            hook.setGroup(p, getConfig().getString("default_group").trim());
-                        }
-                    } else if (getServer().getPluginManager().getPlugin("PermissionsEx") != null && !use_vault_for_perms) {
-                        PermissionUser user = PermissionsEx.getUser(p);
-                        String[] l = user.getGroupsNames();
-                        String[] d = {getConfig().getString("default_group").trim()};
-                        for (int i = 0; i < l.length; i++) {
-                            if (l[i].equalsIgnoreCase(n.trim())) {
-                                user.setGroups(d);
-                            }
-                        }
-                    } else if (perms.playerInGroup(p, n.trim())) {
-                        perms.playerRemoveGroup(p, n.trim());
-                        perms.playerAddGroup(p, getConfig().getString("default_group").trim());
+                    List<String> l = hook.getGroups(p);
+                    if (l.contains(n.trim())) {
+                        hook.setGroup(p, getConfig().getString("default_group").trim());
                     }
                 }
             }

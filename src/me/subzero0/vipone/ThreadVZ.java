@@ -184,20 +184,7 @@ public class ThreadVZ extends Thread {
                     ResultSet rs = pstSV.executeQuery();
                     if (rs.next()) {
                         if (rs.getInt(grupo) != 0) {
-                            if (plugin.getServer().getPluginManager().getPlugin("GroupManager") != null && !plugin.use_vault_for_perms) {
-                                plugin.hook.setGroup((Player) sender, grupo);
-                            } else if (plugin.getServer().getPluginManager().getPlugin("PermissionsEx") != null && !plugin.use_vault_for_perms) {
-                                PermissionUser user = PermissionsEx.getUser((Player) sender);
-                                String[] n = {grupo};
-                                user.setGroups(n);
-                            } else {
-                                for (String g : plugin.getConfig().getStringList("vip_groups")) {
-                                    if (Main.perms.playerInGroup((Player) sender, g.trim())) {
-                                        Main.perms.playerRemoveGroup((Player) sender, g.trim());
-                                    }
-                                }
-                                Main.perms.playerAddGroup((Player) sender, grupo);
-                            }
+                            plugin.hook.setGroup((Player) sender, grupo);
                             PreparedStatement pst = con.prepareStatement("UPDATE `vips` SET `usando`=? WHERE `nome`=?;");
                             pst.setString(1, grupo);
                             pst.setString(2, sender.getName());
@@ -377,20 +364,7 @@ public class ThreadVZ extends Thread {
                         pst2.setString(1, p.getName());
                         pst2.execute();
                         pst2.close();
-                        if (plugin.getServer().getPluginManager().getPlugin("GroupManager") != null && !plugin.use_vault_for_perms) {
-                            plugin.hook.setGroup(p, plugin.getConfig().getString("default_group").trim());
-                        } else if (plugin.getServer().getPluginManager().getPlugin("PermissionsEx") != null && !plugin.use_vault_for_perms) {
-                            PermissionUser user = PermissionsEx.getUser(p);
-                            String[] n = {plugin.getConfig().getString("default_group").trim()};
-                            user.setGroups(n);
-                        } else {
-                            for (String g : plugin.getConfig().getStringList("vip_groups")) {
-                                if (Main.perms.playerInGroup(p, g.trim())) {
-                                    Main.perms.playerRemoveGroup(p, g.trim());
-                                }
-                            }
-                            Main.perms.playerAddGroup(p, plugin.getConfig().getString("default_group").trim());
-                        }
+                        plugin.hook.setGroup(p, plugin.getConfig().getString("default_group").trim());
                         plugin.getServer().broadcastMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("rvip").trim().replaceAll("%admin%", sender.getName()).replaceAll("%name%", p.getName()) + "!");
                     } else {
                         sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + p.getName() + " " + plugin.getMessage("error9") + "!");
@@ -577,23 +551,9 @@ public class ThreadVZ extends Thread {
                             }
                         } else if (plugin.getConfig().getBoolean("rvip_unlisted")) {
                             for (String n : plugin.getConfig().getStringList("vip_groups")) {
-                                if (plugin.getServer().getPluginManager().getPlugin("GroupManager") != null && !plugin.use_vault_for_perms) {
-                                    List<String> l = plugin.hook.getGroups(p2);
-                                    if (l.contains(n.trim())) {
-                                        plugin.hook.setGroup(p2, plugin.getConfig().getString("default_group").trim());
-                                    }
-                                } else if (plugin.getServer().getPluginManager().getPlugin("PermissionsEx") != null && !plugin.use_vault_for_perms) {
-                                    PermissionUser user = PermissionsEx.getUser(p2);
-                                    String[] l = user.getGroupsNames();
-                                    String[] d = {plugin.getConfig().getString("default_group").trim()};
-                                    for (int i = 0; i < l.length; i++) {
-                                        if (l[i].equalsIgnoreCase(n.trim())) {
-                                            user.setGroups(d);
-                                        }
-                                    }
-                                } else if (Main.perms.playerInGroup(p2, n.trim())) {
-                                    Main.perms.playerRemoveGroup(p2, n.trim());
-                                    Main.perms.playerAddGroup(p2, plugin.getConfig().getString("default_group").trim());
+                                List<String> l = plugin.hook.getGroups(p2);
+                                if (l.contains(n.trim())) {
+                                    plugin.hook.setGroup(p2, plugin.getConfig().getString("default_group").trim());
                                 }
                             }
                         }

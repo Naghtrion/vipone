@@ -265,20 +265,7 @@ public class Commands implements CommandExecutor {
                                 if (!blockuso) {
                                     if (plugin.getConfig().contains("vips." + sender.getName() + "." + grupo)) {
                                         if (plugin.getConfig().getInt("vips." + sender.getName() + "." + grupo) > 0) {
-                                            if (plugin.getServer().getPluginManager().getPlugin("GroupManager") != null && !plugin.use_vault_for_perms) {
-                                                plugin.hook.setGroup((Player) sender, grupo);
-                                            } else if (plugin.getServer().getPluginManager().getPlugin("PermissionsEx") != null && !plugin.use_vault_for_perms) {
-                                                PermissionUser user = PermissionsEx.getUser((Player) sender);
-                                                String[] n = {grupo};
-                                                user.setGroups(n);
-                                            } else {
-                                                for (String g : plugin.getConfig().getStringList("vip_groups")) {
-                                                    if (Main.perms.playerInGroup((Player) sender, g.trim())) {
-                                                        Main.perms.playerRemoveGroup((Player) sender, g.trim());
-                                                    }
-                                                }
-                                                Main.perms.playerAddGroup((Player) sender, grupo);
-                                            }
+                                            plugin.hook.setGroup((Player) sender, grupo);
                                             if (plugin.getConfig().getBoolean("one_vip_change")) {
                                                 if (plugin.trocou.containsKey(sender.getName())) {
                                                     plugin.trocou.remove(sender.getName());
@@ -697,17 +684,8 @@ public class Commands implements CommandExecutor {
                             if (plugin.getConfig().contains("vips." + plugin.getRealName(p.getName()))) {
                                 plugin.getConfig().set("vips." + plugin.getRealName(p.getName()), null);
                                 plugin.saveConfig();
-                                if (plugin.getServer().getPluginManager().getPlugin("GroupManager") != null && !plugin.use_vault_for_perms) {
-                                    plugin.removeRelatedVipGroups(p);
-                                    plugin.hook.setGroup(p, plugin.getConfig().getString("default_group").trim());
-                                } else if (plugin.getServer().getPluginManager().getPlugin("PermissionsEx") != null && !plugin.use_vault_for_perms) {
-                                    PermissionUser user = PermissionsEx.getUser(p);
-                                    plugin.removeRelatedVipGroups(p);
-                                    user.addGroup(plugin.getConfig().getString("default_group").trim());
-                                } else {
-                                    plugin.removeRelatedVipGroups(p);
-                                    Main.perms.playerAddGroup(p, plugin.getConfig().getString("default_group").trim());
-                                }
+                                plugin.removeRelatedVipGroups(p);
+                                plugin.hook.setGroup(p, plugin.getConfig().getString("default_group").trim());
                                 plugin.getServer().broadcastMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("rvip").trim().replaceAll("%admin%", sender.getName()).replaceAll("%name%", p.getName()) + "!");
                             } else {
                                 sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + p.getName() + " " + plugin.getMessage("error9") + "!");
