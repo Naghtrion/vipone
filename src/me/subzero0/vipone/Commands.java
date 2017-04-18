@@ -31,16 +31,8 @@ public class Commands implements CommandExecutor {
             if (sender.hasPermission("vipzero.addvip") || sender.hasPermission("vipzero.admin") || sender.isOp()) {
                 if (args.length == 2) {
                     try {
-                        String grupo = args[0];
-                        boolean achou_grupo = false;
-                        for (String gs : plugin.getConfig().getStringList("vip_groups")) {
-                            if (gs.trim().equalsIgnoreCase(grupo)) {
-                                achou_grupo = true;
-                                grupo = gs.trim();
-                                break;
-                            }
-                        }
-                        if (achou_grupo) {
+                        String grupo = args[0].trim();
+                        if (plugin.foundGroup(grupo)) {
                             int dias = Integer.parseInt(args[1]);
                             if (dias > 0) {
                                 if (plugin.flatfile) {
@@ -81,16 +73,8 @@ public class Commands implements CommandExecutor {
                 if (args.length == 3) {
                     Player p = plugin.getServer().getPlayer(args[0]);
                     if (p != null) {
-                        boolean achou = false;
-                        String grupo = "";
-                        for (String gName : plugin.getConfig().getStringList("vip_groups")) {
-                            if (gName.trim().equalsIgnoreCase(args[1].trim())) {
-                                achou = true;
-                                grupo = gName.trim();
-                                break;
-                            }
-                        }
-                        if (achou) {
+                        String grupo = args[1].trim();
+                        if (plugin.foundGroup(grupo)) {
                             try {
                                 int dias = Integer.parseInt(args[2].trim());
                                 if (dias > 0 && dias < 100000) {
@@ -177,16 +161,8 @@ public class Commands implements CommandExecutor {
                             }
                         } else if (plugin.flatfile) {
                             if (plugin.getConfig().contains("vips." + plugin.getRealName(p.getName()))) {
-                                boolean achou = false;
-                                String grupo = "";
-                                for (String gName : plugin.getConfig().getStringList("vip_groups")) {
-                                    if (gName.trim().equalsIgnoreCase(args[1].trim())) {
-                                        achou = true;
-                                        grupo = gName.trim();
-                                        break;
-                                    }
-                                }
-                                if (achou) {
+                                String grupo = args[1].trim();
+                                if (plugin.foundGroup(grupo)) {
                                     try {
                                         int dias = Integer.parseInt(args[2].trim());
                                         if (dias > 1 && dias < 100000) {
@@ -207,16 +183,8 @@ public class Commands implements CommandExecutor {
                             }
                         } else {
                             try {
-                                boolean achou = false;
-                                String grupo = "";
-                                for (String gName : plugin.getConfig().getStringList("vip_groups")) {
-                                    if (gName.trim().equalsIgnoreCase(args[1].trim())) {
-                                        achou = true;
-                                        grupo = gName.trim();
-                                        break;
-                                    }
-                                }
-                                if (achou) {
+                                String grupo = args[1].trim();
+                                if (plugin.foundGroup(grupo)) {
                                     TaskVZ t = new TaskVZ(plugin, "mudardias2", p, args, sender, grupo);
                                     AsyncManager.getInstance().addQueue(t);
                                 }
@@ -240,16 +208,8 @@ public class Commands implements CommandExecutor {
                 if (args.length == 1) {
                     if (plugin.flatfile) {
                         if (plugin.getConfig().contains("vips." + sender.getName())) {
-                            boolean achou = false;
-                            String grupo = "";
-                            for (String gName : plugin.getConfig().getStringList("vip_groups")) {
-                                if (gName.trim().equalsIgnoreCase(args[0].trim())) {
-                                    achou = true;
-                                    grupo = gName.trim();
-                                    break;
-                                }
-                            }
-                            if (achou) {
+                            String grupo = args[0].trim();
+                            if (plugin.foundGroup(grupo)) {
                                 Calendar now = Calendar.getInstance();
                                 SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
                                 boolean blockuso = false;
@@ -289,16 +249,8 @@ public class Commands implements CommandExecutor {
                             sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("error6") + "!");
                         }
                     } else {
-                        boolean achou = false;
-                        String grupo = "";
-                        for (String gName : plugin.getConfig().getStringList("vip_groups")) {
-                            if (gName.trim().equalsIgnoreCase(args[0].trim())) {
-                                achou = true;
-                                grupo = gName.trim();
-                                break;
-                            }
-                        }
-                        if (achou) {
+                        String grupo = args[0].trim();
+                        if (plugin.foundGroup(grupo)) {
                             TaskVZ t = new TaskVZ(plugin, "trocarvip", sender, grupo);
                             AsyncManager.getInstance().addQueue(t);
                         } else {
@@ -318,15 +270,7 @@ public class Commands implements CommandExecutor {
                 if (args.length == 2) {
                     try {
                         String grupo = args[0];
-                        boolean achou_grupo = false;
-                        for (String gs : plugin.getConfig().getStringList("vip_groups")) {
-                            if (gs.trim().equalsIgnoreCase(grupo)) {
-                                achou_grupo = true;
-                                grupo = gs.trim();
-                                break;
-                            }
-                        }
-                        if (achou_grupo) {
+                        if (plugin.foundGroup(grupo)) {
                             int dias = Integer.parseInt(args[1]);
                             if (dias > 0) {
                                 String key = plugin.FormatKey();
