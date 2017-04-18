@@ -522,14 +522,10 @@ public class Items implements Runnable {
                             e.printStackTrace();
                         }
                     } else if (text.equalsIgnoreCase("$")) {
-                        if (!plugin.block_dinheiro) {
-                            int item_quant = Integer.parseInt(i.split(",")[3]);
-                            EconomyResponse r = Main.econ.depositPlayer(p.getName(), item_quant);
-                            if (!r.transactionSuccess()) {
-                                plugin.getLogger().info(String.format("ERROR: %s", r.errorMessage));
-                            }
-                        } else {
-                            plugin.getLogger().info("ERROR - BlockMoney");
+                        int item_quant = Integer.parseInt(i.split(",")[3]);
+                        EconomyResponse r = Main.econ.depositPlayer(p.getName(), item_quant);
+                        if (!r.transactionSuccess()) {
+                            plugin.getLogger().info(String.format("ERROR: %s", r.errorMessage));
                         }
                     } else if (text.equalsIgnoreCase("xp")) {
                         int xp_quant = Integer.parseInt(i.split(",")[3]);

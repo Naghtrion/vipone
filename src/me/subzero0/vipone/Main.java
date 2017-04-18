@@ -1,6 +1,7 @@
 package me.subzero0.vipone;
 
 import java.io.File;
+import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -12,10 +13,12 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
 import me.subzero0.vipone.async.AsyncManager;
 
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
+import org.bukkit.Bukkit;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -24,6 +27,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -32,11 +36,9 @@ public class Main extends JavaPlugin implements Listener {
     protected PermissionsManager hook = null;
     protected static Economy econ = null;
     protected static Permission perms = null;
-    protected boolean block_dinheiro = false;
     protected FileConfiguration language = null;
     protected boolean flatfile = true;
     protected boolean usekey_global = false;
-    protected String need_update = null;
     protected HashMap<String, String> trocou = new HashMap<String, String>();
 
     //Mysql
@@ -59,7 +61,30 @@ public class Main extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        getLogger().info("Enabling VipOne (V" + getDescription().getVersion() + ") - Author: SubZero0 - Edit by: BrineDev");
+        getLogger().log(Level.INFO, "Enabling VipOne (V{0}) - Author: SubZero0 - Edit by: BrineDev", getDescription().getVersion());
+        if (!checkVault())
+        {
+            super.setEnabled(false);
+            getLogger().warning("Plugin Vault not found. This plugin needs Vault to work! Disabling...");
+            return;
+        }
+
+        if (!setupPermissions())
+        {
+            super.setEnabled(false);
+            getLogger().warning("Vault is not linked to any permissions plugin! Disabling...");
+            return;
+        }
+        getLogger().info("Hooked to Vault (Permission).");
+
+        if (!setupEconomy())
+        {
+            super.setEnabled(false);
+            getLogger().warning("Vault is not linked to any economy plugin! Disabling...");
+            return;
+        }
+        getLogger().info("Hooked to Vault (Economy).");
+        
         getServer().getPluginCommand("gerarkey").setExecutor(new Commands(this));
         getServer().getPluginCommand("newkey").setExecutor(new Commands(this));
         getServer().getPluginCommand("keys").setExecutor(new Commands(this));
@@ -178,28 +203,6 @@ public class Main extends JavaPlugin implements Listener {
             }, 20L, 1200 * tempo);
         }
 
-        boolean perm_linked = false;
-        if (!setupPermissions()) {
-            getLogger().warning("ERROR: No permissions plugin found! Disabling...");
-            getServer().getPluginManager().disablePlugin(this);
-        } else {
-            getLogger().info("Hooked to Vault (Permission).");
-            perm_linked = true;
-        }
-
-        if (perm_linked) {
-            if (getServer().getPluginManager().getPlugin("Vault") == null) {
-                getLogger().warning("WARNING: Plugin Vault not found. Transfers disabled.");
-                block_dinheiro = true;
-            } else if (!setupEconomy()) {
-                getLogger().warning("WARNING: Vault is not linked to any economy plugin. Transfers disabled.");
-                block_dinheiro = true;
-            } else {
-                setupPermissions();
-                getLogger().info("Hooked to Vault (Economy).");
-            }
-        }
-
         if (getConfig().getBoolean("pagseguro.use")) {
             if (!getConfig().getString("pagseguro.email").equals("suporte@lojamodelo.com.br") && !getConfig().getString("pagseguro.token").equals("95112EE828D94278BD394E91C4388F20")) {
                 use_pagseguro = true;
@@ -285,30 +288,32 @@ public class Main extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
-        getLogger().info("Disabling VipZero - Author: SubZero0");
+        getLogger().log(Level.WARNING, "Disabling VipOne (V{0}) - Author: SubZero0 - Edit by: BrineDev", getDescription().getVersion());
         AsyncManager.getInstance().stop();
     }
 
-    private boolean setupEconomy() {
-        if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            return false;
-        }
+    private boolean checkVault()
+    {
+        Plugin pVT = Bukkit.getPluginManager().getPlugin("Vault");
+        return pVT != null && pVT.isEnabled();
+    }
+
+
+    private boolean setupEconomy()
+    {
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) {
+        if (rsp == null)
             return false;
-        }
         econ = rsp.getProvider();
         return econ != null;
     }
 
-    private boolean setupPermissions() {
-        if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            return false;
-        }
+
+    private boolean setupPermissions()
+    {
         RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
-        if (rsp == null) {
+        if (rsp == null)
             return false;
-        }
         perms = rsp.getProvider();
         return perms != null;
     }
@@ -398,18 +403,6 @@ public class Main extends JavaPlugin implements Listener {
     @EventHandler
     protected void onLogin(PlayerJoinEvent e) {
         AtualizarVIP(e.getPlayer());
-        if (e.getPlayer().hasPermission("vipzero.notify") || e.getPlayer().hasPermission("vipzero.notificar")) {
-            final Player p = e.getPlayer();
-            getServer().getScheduler().runTaskLater(this, new Runnable() {
-                @Override
-                public void run() {
-                    if (need_update != null) {
-                        p.sendMessage(ChatColor.AQUA + "[VipZero] " + ChatColor.WHITE + "New update avaible: " + ChatColor.AQUA + "V" + need_update + "!");
-                        p.sendMessage(ChatColor.AQUA + "Download: " + ChatColor.WHITE + "http://dev.bukkit.org/server-mods/vipzero/");
-                    }
-                }
-            }, 60L);
-        }
     }
 
     protected String getMessage(String t) {
@@ -504,29 +497,19 @@ public class Main extends JavaPlugin implements Listener {
         return name;
     }
 
-    private String[] letras = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
-
     protected String FormatKey() {
-        String key = "";
-        int t = 0;
-        Random n = new Random();
         int tmax = getConfig().getInt("key_length");
-        if (tmax < 1 || tmax > 10) {
+        if (tmax < 1 || tmax > 32)
+        {
             tmax = 10;
         }
-        while (t < tmax) {
-            switch (n.nextInt(2)) {
-                case 0: {
-                    key += letras[n.nextInt(letras.length)];
-                    break;
-                }
-                case 1: {
-                    key += String.valueOf(n.nextInt(10));
-                    break;
-                }
-            }
-            t++;
+        String chartset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        Random random = new SecureRandom();
+        String result = "";
+        for (int i = 0; i < tmax; i += 1)
+        {
+            result += (chartset.charAt(random.nextInt(chartset.length())));
         }
-        return key;
+        return result;
     }
 }
