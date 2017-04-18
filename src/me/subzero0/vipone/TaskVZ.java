@@ -124,6 +124,7 @@ public class TaskVZ implements Runnable {
         this.dias = dias;
     }
 
+    @Override
     public void run() {
         switch (tipo) {
             case "addvip": {

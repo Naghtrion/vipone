@@ -169,6 +169,7 @@ public class Main extends JavaPlugin implements Listener {
         int tempo = getConfig().getInt("check_time");
         if (tempo != 0) {
             getServer().getScheduler().runTaskTimerAsynchronously(this, new Runnable() {
+                @Override
                 public void run() {
                     for (Player p : getServer().getOnlinePlayers()) {
                         AtualizarVIP(p);
@@ -400,6 +401,7 @@ public class Main extends JavaPlugin implements Listener {
         if (e.getPlayer().hasPermission("vipzero.notify") || e.getPlayer().hasPermission("vipzero.notificar")) {
             final Player p = e.getPlayer();
             getServer().getScheduler().runTaskLater(this, new Runnable() {
+                @Override
                 public void run() {
                     if (need_update != null) {
                         p.sendMessage(ChatColor.AQUA + "[VipZero] " + ChatColor.WHITE + "New update avaible: " + ChatColor.AQUA + "V" + need_update + "!");

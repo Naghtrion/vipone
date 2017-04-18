@@ -32,6 +32,7 @@ public class PagSeguro implements Runnable {
         sender = cmds;
     }
 
+    @Override
     public void run() {
         try {
             transaction = TransactionSearchService.searchByCode(new AccountCredentials(plugin.getConfig().getString("pagseguro.email"), plugin.getConfig().getString("pagseguro.token")), transactionCode);
