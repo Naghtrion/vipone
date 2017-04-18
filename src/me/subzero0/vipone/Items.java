@@ -33,11 +33,6 @@ public class Items implements Runnable {
 
     @Override
     public void run() {
-        try {
-            Thread.sleep(new Random().nextInt(1000));
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
-        }
         List<String> list = plugin.getConfig().getStringList("vip_items");
         for (String i : list) {
             String group2 = i.split(",")[0];
