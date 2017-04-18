@@ -512,4 +512,13 @@ public class Main extends JavaPlugin implements Listener {
         }
         return result;
     }
+    
+
+    protected boolean foundGroup(String grupo)
+    {
+        for (String gs : getConfig().getStringList("vip_groups"))
+            if (gs.equalsIgnoreCase(grupo))
+                return true;
+        return false;
+    }
 }
