@@ -368,7 +368,7 @@ public class Main extends JavaPlugin implements Listener {
         getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
             @Override
             public void run() {
-                p.sendMessage(ChatColor.AQUA + "[" + getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + getMessage("expired").trim().replaceAll("%group%", grupo.toUpperCase()) + ".");
+                p.sendMessage(ChatColor.AQUA + "[" + getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + getMessage("expired").trim().replace("%group%", grupo.toUpperCase()) + ".");
             }
         }, 80L);
     }
@@ -384,7 +384,7 @@ public class Main extends JavaPlugin implements Listener {
         getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
             @Override
             public void run() {
-                p.sendMessage(ChatColor.AQUA + "[" + getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + getMessage("expired").trim().replaceAll("%group%", grupo.toUpperCase()) + ".");
+                p.sendMessage(ChatColor.AQUA + "[" + getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + getMessage("expired").trim().replace("%group%", grupo.toUpperCase()) + ".");
             }
         }, 80L);
     }

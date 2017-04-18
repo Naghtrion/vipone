@@ -53,7 +53,7 @@ public class Commands implements CommandExecutor {
                                         }
                                     }
                                     plugin.saveConfig();
-                                    sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("addvip").trim().replaceAll("%days%", Integer.toString(dias).replaceAll("%group%", grupo)) + ".");
+                                    sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("addvip").trim().replace("%days%", Integer.toString(dias).replace("%group%", grupo)) + ".");
                                     plugin.reloadConfig();
                                 } else {
                                     TaskVZ nk = new TaskVZ(plugin, "addvip", sender, grupo, dias);
@@ -96,9 +96,9 @@ public class Commands implements CommandExecutor {
                                 if (dias > 0 && dias < 100000) {
                                     if (plugin.flatfile) {
                                         if (plugin.usekey_global) {
-                                            plugin.getServer().broadcastMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("success3").trim().replaceAll("%name%", p.getName()).replaceAll("%group%", grupo).replaceAll("%days%", Integer.toString(dias)) + "!");
+                                            plugin.getServer().broadcastMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("success3").trim().replace("%name%", p.getName()).replace("%group%", grupo).replace("%days%", Integer.toString(dias)) + "!");
                                         } else {
-                                            p.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("success2").replaceAll("%group%", grupo.toUpperCase()).replaceAll("%days%", Integer.toString(dias)) + "!");
+                                            p.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("success2").replace("%group%", grupo.toUpperCase()).replace("%days%", Integer.toString(dias)) + "!");
                                         }
                                         if (!plugin.getConfig().contains("vips." + plugin.getRealName(p.getName()))) {
                                             Calendar now = Calendar.getInstance();
@@ -192,7 +192,7 @@ public class Commands implements CommandExecutor {
                                         if (dias > 1 && dias < 100000) {
                                             plugin.getConfig().set("vips." + plugin.getRealName(p.getName()) + "." + grupo, dias);
                                             plugin.saveConfig();
-                                            plugin.getServer().broadcastMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("cdays").trim().replaceAll("%admin%", sender.getName()).replaceAll("%group%", grupo).replaceAll("%name%", p.getName()).replaceAll("%days%", Integer.toString(dias)) + "!");
+                                            plugin.getServer().broadcastMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("cdays").trim().replace("%admin%", sender.getName()).replace("%group%", grupo).replace("%name%", p.getName()).replace("%days%", Integer.toString(dias)) + "!");
                                         } else {
                                             sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("error1") + "!");
                                         }
@@ -415,7 +415,7 @@ public class Commands implements CommandExecutor {
                     plugin.getConfig().set("keys." + key, null);
                     plugin.saveConfig();
                     plugin.reloadConfig();
-                    sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("success5").replaceAll("%key%", key) + "!");
+                    sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("success5").replace("%key%", key) + "!");
                 } else {
                     TaskVZ t = new TaskVZ(plugin, "delkey", key, sender);
                     AsyncManager.getInstance().addQueue(t);
@@ -436,9 +436,9 @@ public class Commands implements CommandExecutor {
                                 String grupo = plugin.getConfig().getString("keys." + key).split(",")[0].trim();
                                 int dias = Integer.parseInt(plugin.getConfig().getString("keys." + key).split(",")[1].trim());
                                 if (plugin.usekey_global) {
-                                    plugin.getServer().broadcastMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("success3").trim().replaceAll("%name%", sender.getName()).replaceAll("%group%", grupo).replaceAll("%days%", Integer.toString(dias)) + "!");
+                                    plugin.getServer().broadcastMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("success3").trim().replace("%name%", sender.getName()).replace("%group%", grupo).replace("%days%", Integer.toString(dias)) + "!");
                                 } else {
-                                    sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("success2").replaceAll("%group%", grupo).replaceAll("%days%", Integer.toString(dias)) + "!");
+                                    sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("success2").replace("%group%", grupo).replace("%days%", Integer.toString(dias)) + "!");
                                 }
                                 if (!plugin.getConfig().contains("vips." + sender.getName())) {
                                     Calendar now = Calendar.getInstance();
@@ -591,7 +591,7 @@ public class Commands implements CommandExecutor {
                     sender.sendMessage(ChatColor.AQUA + "/tempovip " + ChatColor.WHITE + "- Mostra o ultimo dia de seu VIP.");
                 }
                 if (sender.hasPermission("vipzero.trocarvip") || sender.hasPermission("vipzero.changevip") || sender.hasPermission("vipzero.user") || sender.isOp() || sender.hasPermission("vipzero.admin")) {
-                    sender.sendMessage(ChatColor.AQUA + "/trocarvip " + ChatColor.WHITE + "- Muda o VIP que voc� est� usando.");
+                    sender.sendMessage(ChatColor.AQUA + "/trocarvip " + ChatColor.WHITE + "- Muda o VIP que você está usando.");
                 }
                 if (sender.hasPermission("vipzero.gerarkey") || sender.hasPermission("vipzero.newkey") || sender.isOp() || sender.hasPermission("vipzero.admin")) {
                     sender.sendMessage(ChatColor.AQUA + "/gerarkey " + ChatColor.WHITE + "- Gera uma key com X dias de VIP.");
@@ -612,19 +612,19 @@ public class Commands implements CommandExecutor {
                     sender.sendMessage(ChatColor.AQUA + "/mudardias " + ChatColor.WHITE + "- Muda os dias de do grupo VIP.");
                 }
                 if (sender.hasPermission("vipzero.reload") || sender.isOp() || sender.hasPermission("vipzero.admin")) {
-                    sender.sendMessage(ChatColor.AQUA + "/vipone reload " + ChatColor.WHITE + "- Recarrega o arquivo de configura��o.");
+                    sender.sendMessage(ChatColor.AQUA + "/vipone reload " + ChatColor.WHITE + "- Recarrega o arquivo de configuração.");
                 }
                 if (sender.hasPermission("vipzero.pagseguro") || sender.isOp() || sender.hasPermission("vipzero.admin")) {
-                    sender.sendMessage(ChatColor.AQUA + "/vipone pagseguro " + ChatColor.WHITE + "- D� VIP usando o c�digo do PagSeguro.");
+                    sender.sendMessage(ChatColor.AQUA + "/vipone pagseguro " + ChatColor.WHITE + "- Dá VIP usando o código do PagSeguro.");
                 }
                 if (sender.hasPermission("vipzero.paypal") || sender.isOp() || sender.hasPermission("vipzero.admin")) {
-                    sender.sendMessage(ChatColor.AQUA + "/vipone paypal " + ChatColor.WHITE + "- D� VIP usando o c�digo do PayPal.");
+                    sender.sendMessage(ChatColor.AQUA + "/vipone paypal " + ChatColor.WHITE + "- Dá VIP usando o código do PayPal.");
                 }
                 if (sender.hasPermission("vipzero.darvip") || sender.hasPermission("vipzero.givevip") || sender.isOp() || sender.hasPermission("vipzero.admin")) {
-                    sender.sendMessage(ChatColor.AQUA + "/darvip " + ChatColor.WHITE + "- D� VIP sem o uso de uma key.");
+                    sender.sendMessage(ChatColor.AQUA + "/darvip " + ChatColor.WHITE + "- Dá VIP sem o uso de uma key.");
                 }
                 if (sender.hasPermission("vipzero.addvip") || sender.isOp() || sender.hasPermission("vipzero.admin")) {
-                    sender.sendMessage(ChatColor.AQUA + "/addvip " + ChatColor.WHITE + "- D� dias VIPs a todos desse grupo (sem itens).");
+                    sender.sendMessage(ChatColor.AQUA + "/addvip " + ChatColor.WHITE + "- Dá dias VIPs a todos desse grupo (sem itens).");
                 }
             } else {
                 sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.DARK_AQUA + "Commands of VipZero:");
@@ -684,7 +684,7 @@ public class Commands implements CommandExecutor {
                                 plugin.saveConfig();
                                 plugin.removeRelatedVipGroups(p);
                                 plugin.hook.setGroup(p, plugin.getConfig().getString("default_group").trim());
-                                plugin.getServer().broadcastMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("rvip").trim().replaceAll("%admin%", sender.getName()).replaceAll("%name%", p.getName()) + "!");
+                                plugin.getServer().broadcastMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("rvip").trim().replace("%admin%", sender.getName()).replace("%name%", p.getName()) + "!");
                             } else {
                                 sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + p.getName() + " " + plugin.getMessage("error9") + "!");
                             }

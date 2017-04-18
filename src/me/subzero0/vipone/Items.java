@@ -215,8 +215,8 @@ public class Items extends Thread {
                                             }
                                             case "name": {
                                                 ItemMeta im = is.getItemMeta();
-                                                opt = opt.replaceAll("&", "�");
-                                                opt = opt.replaceAll("@player", p.getName());
+                                                opt = opt.replace('&', '§');
+                                                opt = opt.replace("@player", p.getName());
                                                 im.setDisplayName(opt);
                                                 is.setItemMeta(im);
                                                 break;
@@ -224,8 +224,8 @@ public class Items extends Thread {
                                             case "desc": {
                                                 ItemMeta im = is.getItemMeta();
                                                 ArrayList<String> lore = new ArrayList<String>();
-                                                opt = opt.replaceAll("&", "�");
-                                                opt = opt.replaceAll("@player", p.getName());
+                                                opt = opt.replace('&', '§');
+                                                opt = opt.replace("@player", p.getName());
                                                 if (im.getLore() != null) {
                                                     for (String n : im.getLore()) {
                                                         lore.add(n);
@@ -476,16 +476,16 @@ public class Items extends Thread {
                                                 break;
                                             }
                                             case "name": {
-                                                opt = opt.replaceAll("&", "�");
-                                                opt = opt.replaceAll("@player", p.getName());
+                                                opt = opt.replace('&', '§');
+                                                opt = opt.replace("@player", p.getName());
                                                 pm.setDisplayName(opt);
                                                 sample.setItemMeta(pm);
                                                 break;
                                             }
                                             case "desc": {
                                                 ArrayList<String> lore = new ArrayList<String>();
-                                                opt = opt.replaceAll("&", "�");
-                                                opt = opt.replaceAll("@player", p.getName());
+                                                opt = opt.replace('&', '§');
+                                                opt = opt.replace("@player", p.getName());
                                                 if (pm.getLore() != null) {
                                                     for (String n : pm.getLore()) {
                                                         lore.add(n);
@@ -534,11 +534,11 @@ public class Items extends Thread {
                         int xp_quant = Integer.parseInt(i.split(",")[3]);
                         p.giveExpLevels(xp_quant);
                     } else if (text.equalsIgnoreCase("command") || text.equalsIgnoreCase("comando") || text.equalsIgnoreCase("cmd")) {
-                        String command = i.split(",")[3].replaceAll("@player", p.getName());
+                        String command = i.split(",")[3].replace("@player", p.getName());
                         plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), command);
                     } else if (text.equalsIgnoreCase("message") || text.equalsIgnoreCase("mensagem") || text.equalsIgnoreCase("msg")) {
-                        String msg = i.split(",")[3].replaceAll("@player", p.getName());
-                        msg = msg.replaceAll("&", "§");
+                        String msg = i.split(",")[3].replace("@player", p.getName());
+                        msg = msg.replace("&", "§");
                         p.sendMessage(msg);
                     } else {
                         plugin.getLogger().info("ERROR - No type - Info: " + text);

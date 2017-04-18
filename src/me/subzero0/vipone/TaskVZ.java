@@ -138,7 +138,7 @@ public class TaskVZ implements Runnable {
                         pst2.executeUpdate();
                         pst2.close();
                     }
-                    sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("addvip").trim().replaceAll("%days%", Integer.toString(dias).replaceAll("%group%", grupo)) + ".");
+                    sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("addvip").trim().replace("%days%", Integer.toString(dias).replace("%group%", grupo)) + ".");
                     pst.close();
                     rs.close();
                     con.close();
@@ -253,9 +253,9 @@ public class TaskVZ implements Runnable {
                         pst.setString(1, sender.getName());
                         ResultSet rs = pst.executeQuery();
                         if (plugin.usekey_global) {
-                            plugin.getServer().broadcastMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("success3").trim().replaceAll("%name%", sender.getName()).replaceAll("%group%", grupo).replaceAll("%days%", Integer.toString(dias)) + "!");
+                            plugin.getServer().broadcastMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("success3").trim().replace("%name%", sender.getName()).replace("%group%", grupo).replace("%days%", Integer.toString(dias)) + "!");
                         } else {
-                            sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("success2").replaceAll("%group%", grupo).replaceAll("%days%", Integer.toString(dias)) + "!");
+                            sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("success2").replace("%group%", grupo).replace("%days%", Integer.toString(dias)) + "!");
                         }
                         if (rs.next()) {
                             PreparedStatement upp = con.prepareStatement("UPDATE `vips` SET `" + grupo + "`=? WHERE `nome`=?;");
@@ -317,7 +317,7 @@ public class TaskVZ implements Runnable {
                         delkey.setString(1, key);
                         delkey.executeUpdate();
                         delkey.close();
-                        sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("success5").replaceAll("%key%", key) + "!");
+                        sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("success5").replace("%key%", key) + "!");
                     } else {
                         sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("error5") + "!");
                     }
@@ -363,7 +363,7 @@ public class TaskVZ implements Runnable {
                         pst2.execute();
                         pst2.close();
                         plugin.hook.setGroup(p, plugin.getConfig().getString("default_group").trim());
-                        plugin.getServer().broadcastMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("rvip").trim().replaceAll("%admin%", sender.getName()).replaceAll("%name%", p.getName()) + "!");
+                        plugin.getServer().broadcastMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("rvip").trim().replace("%admin%", sender.getName()).replace("%name%", p.getName()) + "!");
                     } else {
                         sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + p.getName() + " " + plugin.getMessage("error9") + "!");
                     }
@@ -413,7 +413,7 @@ public class TaskVZ implements Runnable {
                             pst2.setString(2, p.getName());
                             pst2.executeUpdate();
                             pst2.close();
-                            plugin.getServer().broadcastMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("cdays").trim().replaceAll("%admin%", sender.getName()).replaceAll("%group%", grupo).replaceAll("%name%", p.getName()).replaceAll("%days%", Integer.toString(dias)) + "!");
+                            plugin.getServer().broadcastMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("cdays").trim().replace("%admin%", sender.getName()).replace("%group%", grupo).replace("%name%", p.getName()).replace("%days%", Integer.toString(dias)) + "!");
                         } else {
                             sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("error1") + "!");
                         }
@@ -573,9 +573,9 @@ public class TaskVZ implements Runnable {
                         pst.setString(1, p.getName());
                         ResultSet rs = pst.executeQuery();
                         if (plugin.usekey_global) {
-                            plugin.getServer().broadcastMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("success3").trim().replaceAll("%name%", p.getName()).replaceAll("%group%", grupo).replaceAll("%days%", Integer.toString(dias)) + "!");
+                            plugin.getServer().broadcastMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("success3").trim().replace("%name%", p.getName()).replace("%group%", grupo).replace("%days%", Integer.toString(dias)) + "!");
                         } else {
-                            p.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("success2").replaceAll("%group%", grupo).replaceAll("%days%", Integer.toString(dias)) + "!");
+                            p.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("success2").replace("%group%", grupo).replace("%days%", Integer.toString(dias)) + "!");
                         }
                         if (rs.next()) {
                             PreparedStatement upp = con.prepareStatement("UPDATE `vips` SET `" + grupo + "`=? WHERE `nome`=?;");
