@@ -466,8 +466,8 @@ public class Main extends JavaPlugin implements Listener {
                     }
                 }
             } else if (getConfig().getBoolean("rvip_unlisted")) {
+                List<String> l = hook.getGroups(p);
                 for (String n : getConfig().getStringList("vip_groups")) {
-                    List<String> l = hook.getGroups(p);
                     if (l.contains(n.trim())) {
                         hook.setGroup(p, getConfig().getString("default_group").trim());
                     }

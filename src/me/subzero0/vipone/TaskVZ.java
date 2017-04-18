@@ -549,8 +549,8 @@ public class TaskVZ implements Runnable {
                                 }
                             }
                         } else if (plugin.getConfig().getBoolean("rvip_unlisted")) {
+                            List<String> l = plugin.hook.getGroups(p2);
                             for (String n : plugin.getConfig().getStringList("vip_groups")) {
-                                List<String> l = plugin.hook.getGroups(p2);
                                 if (l.contains(n.trim())) {
                                     plugin.hook.setGroup(p2, plugin.getConfig().getString("default_group").trim());
                                 }
