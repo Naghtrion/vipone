@@ -17,7 +17,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
-public class Items extends Thread {
+public class Items implements Runnable {
 
     private String group;
     private Main plugin;

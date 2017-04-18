@@ -19,7 +19,7 @@ import br.com.uol.pagseguro.domain.Transaction;
 import br.com.uol.pagseguro.service.TransactionSearchService;
 import me.subzero0.vipone.async.AsyncManager;
 
-public class PagSeguro extends Thread {
+public class PagSeguro implements Runnable {
 
     private Main plugin;
     private String transactionCode = "";

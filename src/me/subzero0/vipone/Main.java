@@ -391,7 +391,7 @@ public class Main extends JavaPlugin implements Listener {
 
     protected void DarItensVip(Player p, int dias, String group) {
         Items i = new Items(this, p, dias, group);
-        i.start();
+        AsyncManager.getInstance().addQueue(i);
     }
 
     @EventHandler

@@ -19,7 +19,7 @@ import paypalnvp.profile.BaseProfile;
 import paypalnvp.profile.Profile;
 import paypalnvp.request.GetTransactionDetails;
 
-public class PayPal extends Thread {
+public class PayPal implements Runnable {
 
     private Main plugin = null;
     private String transactID = "";

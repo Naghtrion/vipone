@@ -551,7 +551,7 @@ public class Commands implements CommandExecutor {
                         }
                         plugin.using_ps.put(args[1].toUpperCase(), "");
                         PagSeguro ps = new PagSeguro(plugin, args[1], sender);
-                        ps.start();
+                        AsyncManager.getInstance().addQueue(ps);
                         return true;
                     }
                 }
@@ -577,7 +577,7 @@ public class Commands implements CommandExecutor {
                         }
                         plugin.using_pp.put(args[1].toUpperCase(), "");
                         PayPal pp = new PayPal(plugin, args[1], sender);
-                        pp.start();
+                        AsyncManager.getInstance().addQueue(pp);
                         return true;
                     }
                 }
