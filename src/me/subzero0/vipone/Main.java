@@ -138,7 +138,6 @@ public class Main extends JavaPlugin implements Listener {
 
         File lFile = new File(this.getDataFolder(), "language_" + getConfig().getString("language").trim() + ".yml");
         language = YamlConfiguration.loadConfiguration(lFile);
-        getLogger().info("Checking for language file update...");
 
         if (getConfig().getBoolean("MySQL.use")) {
             mysql_url = "jdbc:mysql://" + getConfig().getString("MySQL.Host").trim() + ":" + getConfig().getInt("MySQL.Port") + "/" + getConfig().getString("MySQL.Database").trim() + "";

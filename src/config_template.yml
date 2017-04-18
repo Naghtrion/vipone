@@ -7,13 +7,11 @@ MySQL:
   Database: minecraft
 language: en
 server_name: VipZero
-check_for_updates: true
 case_sensitive_for_flatfile: false
 key_length: 10
 one_vip_change: false
 usekey_global: false
 rvip_unlisted: true
-use_vault_for_permissions: false
 check_time: 10
 pagseguro:
   use: false
