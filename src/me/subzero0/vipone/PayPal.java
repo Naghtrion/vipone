@@ -140,7 +140,7 @@ public class PayPal implements Runnable {
                             break;
                         }
                     }
-                    plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), (plugin.getLanguage().trim().equalsIgnoreCase("br") ? "darvip" : "givevip") + " " + sender.getName() + " " + grupo + " " + item3.split(",")[1]);
+                    plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), (plugin.getLanguage().equalsIgnoreCase("br") ? "darvip" : "givevip") + " " + sender.getName() + " " + grupo + " " + item3.split(",")[1]);
                 }
             }
         } else /*if(plugin.getConfig().getInt("pagseguro.mode")==2)*/ {

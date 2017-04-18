@@ -144,9 +144,9 @@ public class Commands implements CommandExecutor {
                         plugin.getLogger().info(plugin.getMessage("error7") + "!");
                     }
                 } else if (sender != plugin.getServer().getConsoleSender()) {
-                    sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.RED + "/" + (plugin.getLanguage().trim().equalsIgnoreCase("br") ? "darvip" : "givevip") + " <" + plugin.getMessage("name") + "> <" + plugin.getMessage("group") + "> <" + plugin.getMessage("days") + ">");
+                    sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.RED + "/" + (plugin.getLanguage().equalsIgnoreCase("br") ? "darvip" : "givevip") + " <" + plugin.getMessage("name") + "> <" + plugin.getMessage("group") + "> <" + plugin.getMessage("days") + ">");
                 } else {
-                    plugin.getLogger().info((plugin.getLanguage().trim().equalsIgnoreCase("br") ? "darvip" : "givevip") + " <" + plugin.getMessage("name") + "> <" + plugin.getMessage("group") + "> <" + plugin.getMessage("days") + ">");
+                    plugin.getLogger().info((plugin.getLanguage().equalsIgnoreCase("br") ? "darvip" : "givevip") + " <" + plugin.getMessage("name") + "> <" + plugin.getMessage("group") + "> <" + plugin.getMessage("days") + ">");
                 }
             } else {
                 sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("error11") + "!");
@@ -228,7 +228,7 @@ public class Commands implements CommandExecutor {
                         sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("error7") + "!");
                     }
                 } else {
-                    sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + "/" + (plugin.getLanguage().trim().equalsIgnoreCase("br") ? "mudardias" : "changedays") + " <" + plugin.getMessage("name") + "> <" + plugin.getMessage("group") + "> <" + plugin.getMessage("days") + ">");
+                    sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + "/" + (plugin.getLanguage().equalsIgnoreCase("br") ? "mudardias" : "changedays") + " <" + plugin.getMessage("name") + "> <" + plugin.getMessage("group") + "> <" + plugin.getMessage("days") + ">");
                 }
             } else {
                 sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("error11") + "!");
@@ -306,7 +306,7 @@ public class Commands implements CommandExecutor {
                         }
                     }
                 } else {
-                    sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + "/" + (plugin.getLanguage().trim().equalsIgnoreCase("br") ? "trocarvip" : "changevip") + " <" + plugin.getMessage("group") + ">");
+                    sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + "/" + (plugin.getLanguage().equalsIgnoreCase("br") ? "trocarvip" : "changevip") + " <" + plugin.getMessage("group") + ">");
                 }
             } else {
                 sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("error11") + "!");
@@ -352,7 +352,7 @@ public class Commands implements CommandExecutor {
                         sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("error2") + ".");
                     }
                 } else {
-                    sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + "/" + (plugin.getLanguage().trim().equalsIgnoreCase("br") ? "gerarkey" : "newkey") + " <" + plugin.getMessage("group") + "> <" + plugin.getMessage("days") + ">");
+                    sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + "/" + (plugin.getLanguage().equalsIgnoreCase("br") ? "gerarkey" : "newkey") + " <" + plugin.getMessage("group") + "> <" + plugin.getMessage("days") + ">");
                 }
             } else {
                 sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("error11") + "!");
@@ -403,7 +403,7 @@ public class Commands implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("apagarkey") || cmd.getName().equalsIgnoreCase("delkey")) {
             if (sender.hasPermission("vipzero.apagarkey") || sender.hasPermission("vipzero.delkey") || sender.isOp() || sender.hasPermission("vipzero.admin")) {
                 if (args.length == 0) {
-                    sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + "/" + (plugin.getLanguage().trim().equalsIgnoreCase("br") ? "apagarkey" : "delkey") + " <key>");
+                    sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + "/" + (plugin.getLanguage().equalsIgnoreCase("br") ? "apagarkey" : "delkey") + " <key>");
                     return true;
                 }
                 String key = args[0].toUpperCase();
@@ -481,7 +481,7 @@ public class Commands implements CommandExecutor {
                         sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("error13") + "!");
                     }
                 } else {
-                    sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + "/" + (plugin.getLanguage().trim().equalsIgnoreCase("br") ? "usarkey" : "usekey") + " <key>");
+                    sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + "/" + (plugin.getLanguage().equalsIgnoreCase("br") ? "usarkey" : "usekey") + " <key>");
                 }
             } else {
                 sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("error11") + "!");
@@ -582,7 +582,7 @@ public class Commands implements CommandExecutor {
                     }
                 }
             }
-            if (plugin.getLanguage().trim().equalsIgnoreCase("br")) {
+            if (plugin.getLanguage().equalsIgnoreCase("br")) {
                 sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.DARK_AQUA + "Comandos do VipZero:");
                 if (sender.hasPermission("vipzero.usarkey") || sender.hasPermission("vipzero.usekey") || sender.hasPermission("vipzero.user") || sender.isOp() || sender.hasPermission("vipzero.admin")) {
                     sender.sendMessage(ChatColor.AQUA + "/usarkey " + ChatColor.WHITE + "- Utiliza uma key VIP.");
@@ -696,7 +696,7 @@ public class Commands implements CommandExecutor {
                         sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("error7") + "!");
                     }
                 } else {
-                    sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + "/" + (plugin.getLanguage().trim().equalsIgnoreCase("br") ? "tirarvip" : "rvip") + " <" + plugin.getMessage("name") + ">");
+                    sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + "/" + (plugin.getLanguage().equalsIgnoreCase("br") ? "tirarvip" : "rvip") + " <" + plugin.getMessage("name") + ">");
                 }
             } else {
                 sender.sendMessage(ChatColor.AQUA + "[" + plugin.getConfig().getString("server_name").trim() + "] " + ChatColor.WHITE + plugin.getMessage("error11") + "!");
