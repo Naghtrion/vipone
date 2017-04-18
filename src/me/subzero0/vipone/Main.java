@@ -27,9 +27,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import ru.tehkode.permissions.PermissionUser;
-import ru.tehkode.permissions.bukkit.PermissionsEx;
-
 @SuppressWarnings("unused")
 public class Main extends JavaPlugin implements Listener {
 
